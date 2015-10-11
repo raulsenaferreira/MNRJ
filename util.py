@@ -29,27 +29,25 @@ class Util(object):
         mDWC['pais'] = 'country'
         mDWC['estado'] = 'stateProvince'
         mDWC['municipio'] = 'municipality'
-        
-        mDWC['localidade'] = ''
+        mDWC['localidade'] = 'locality'
         mDWC['numerocoletor'] = ''
-        mDWC['datacoleta'] = ''
-        mDWC['observacaocoleta'] = ''
-        mDWC['graudelatitude'] = ''
+        mDWC['datacoleta'] = 'eventDate'
+        mDWC['observacaocoleta'] = 'eventRemarks'
+        mDWC['graudelatitude'] = 'decimalLatitude'
         mDWC['minutodelatitude'] = ''
         mDWC['segundodelatitude'] = ''
         mDWC['latitudenortesul'] = ''
-        mDWC['graudelongitude'] = ''
+        mDWC['graudelongitude'] = 'decimalLongitude'
         mDWC['minutodelongitude'] = ''
         mDWC['segundodelongitude'] = ''
         mDWC['longitudelesteoeste'] = ''
-        mDWC['profundidade'] = ''
+        mDWC['profundidade'] = 'verbatimDepth'
         mDWC['nºindividuos'] = ''
-        mDWC['determinador'] = ''
-        mDWC['coletor'] = ''
+        mDWC['determinador'] = 'identifiedBy'
+        mDWC['coletor'] = 'recordedBy'
         mDWC['projeto'] = ''
-        mDWC['graudelongitude'] = ''
         
         try:
             return mDWC[term]
         except KeyError:
-            return 'Termo ainda nao mapeado'
+            return term
