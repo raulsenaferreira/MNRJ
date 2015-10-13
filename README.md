@@ -3,4 +3,4 @@ Repositório do Sistema Web (experimental) de coleções biológicas do Museu Na
 
 
 #Dependencies
-python 3, gnumeric, Node.js
+Python 3, Gnumeric, Node.js, Angular.js
