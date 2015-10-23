@@ -18,14 +18,16 @@ def main(file):
     #file = "TESTE.xlsx result.csv"
     files = file.split('.')
     #chama o shell e converte planilha para csv
-    argument = 'ssconvert {0}'.format(file+' '+files[0]+'.csv')
+    args = '{0} {1}.csv'.format(file, files[0])
+    argument = 'ssconvert {0}'.format(args)
     command_process = subprocess.call([argument], shell=True)
     
     ofile  = open(files[0]+'-CONVERTIDO.csv', "wb")#open('final.csv', "wb")
     writer = csv.writer(ofile, delimiter=',')
     
     header=True
-    f = open(files[0]+'.csv', 'rb')#open("result.csv", 'rb') # opens the csv file
+    arg = '{0}.csv'.format(files[0])
+    f = open(arg, 'rb')#open("result.csv", 'rb') # opens the csv file
     
     try:
         reader = csv.reader(f)  # creates the reader object
