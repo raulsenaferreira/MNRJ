@@ -6,11 +6,38 @@
     <script type="text/javascript" src="app.js"></script>
   </head>
   <body>
-	<div  ng-controller="controle">
-	  	<label>Name:</label>
-		<input ng-click="sobreNome()" type="text" ng-model="Nome" placeholder="Coloque seu nome aqui">
-		<hr>
-		<h1> Hello {{Nome}} {{texto}}!</h1>
-	</div>
+    <div  ng-controller="controle">
+      <label>Name:</label>
+      <input ng-click="sobreNome()" type="text" ng-model="Nome" placeholder="Coloque seu nome aqui">
+      <h1> Hello {{Nome}} {{texto}}!</h1>
+      <form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post">
+        <input type="file" name="userPhoto" />
+        <input type="submit" value="Upload Image" name="submit">
+        <span id = "status"></span>
+      </form>
+    </div>
   </body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+ <script>
+  $(document).ready(function() {
+
+     $('#uploadForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+
+            error: function(xhr) {
+        status('Error: ' + xhr.status);
+            },
+
+            success: function(response) {
+        $("#status").empty().text(response);
+                console.log(response);
+            }
+    });
+        //Very important line, it disable the page refresh.
+    return false;
+    });
+});
+</script>
 </html>
