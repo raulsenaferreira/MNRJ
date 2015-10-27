@@ -7,12 +7,12 @@
   </head>
   <body>
     <div  ng-controller="controle">
-      <label>Name:</label>
+      <!-- <label>Name:</label>
       <input ng-click="sobreNome()" type="text" ng-model="Nome" placeholder="Coloque seu nome aqui">
-      <h1> Hello {{Nome}} {{texto}}!</h1>
+      <h1> Hello {{Nome}} {{texto}}!</h1> -->
       <form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post">
-        <input type="file" name="userPhoto" />
-        <input type="submit" value="Upload Image" name="submit">
+        <input type="file" name="arquivo" />
+        <input type="submit" value="Converter arquivo" name="submit">
         <span id = "status"></span>
       </form>
     </div>

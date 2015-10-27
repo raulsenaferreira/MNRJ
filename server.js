@@ -16,12 +16,12 @@ app.use(multer({ dest: './uploads/',
         return filename+Date.now();
     },
     onFileUploadStart: function (file) {
-        console.log('Subindo arquivo' + file.originalname + ' ...');
+        console.log('Subindo arquivo ' + file.originalname + ' ...');
     },
     onFileUploadComplete: function (file) {
-        console.log(file.fieldname + ' salvo em  ' + file.path)
-        filePath = file.path.split('.')[0];
-        executePython(filePath);
+        console.log(file.fieldname + ' salvo em ' + file.path)
+
+        executePython(file.path);
     }
 }));
 
@@ -40,10 +40,10 @@ app.post('/api/photo',function(req,res){
 
 function executePython(filePath){
   var options = {
-    //mode: 'text',
+    mode: 'text',
     //pythonPath: 'path/to/python',
     //pythonOptions: ['-u'],
-    //scriptPath: 'path/to/my/scripts',
+    //scriptPath: '/home/raul/MNRJ/',
     //args: ['value1', 'value2', 'value3']
     args: [filePath]
   };
@@ -51,7 +51,7 @@ function executePython(filePath){
   PythonShell.run('excel2dwca.py', options, function (err, results) {//excel2dwca
     if (err) throw err;
     // results is an array consisting of messages collected during execution
-    console.log('results: %j', results);
+    //console.log('results: %j', results);
     finalFile = options.args
     console.log('Arquivo disponivel em ' + __dirname + '/' + finalFile + '-CONVERTIDO.csv')
   });

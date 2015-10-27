@@ -14,15 +14,13 @@ import csv     # imports the csv module
 
 def main():
     #parametro file contem nome do arquivo original e sua extensao
-    # deve ser trocado por endereco do arquivo a ser modificado e arquivo destino
-    #file = "TESTE.xlsx result.csv"
-    print ('Retorno: {0}'.format(sys.argv[1]))
-
-    files = str(sys.argv[1]).split('.')
+    file=sys.argv[1]
+    files = str(file).split('.')
     #chama o shell e converte planilha para csv
     argument = 'ssconvert {0} {1}.csv'.format(file, files[0])
 
     command_process = subprocess.call([argument], shell=True)
+
     outputFile = '{0}-CONVERTIDO.csv'.format(files[0])
     ofile  = open(outputFile, "wb")#open('final.csv', "wb")
     writer = csv.writer(ofile, delimiter=',')
