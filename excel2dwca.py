@@ -16,19 +16,19 @@ def main(file):
     #parametro file contem nome do arquivo original e sua extensao
     # deve ser trocado por endereco do arquivo a ser modificado e arquivo destino
     #file = "TESTE.xlsx result.csv"
-    files = file.split('.')
+    files = str(file).split('.')
     #chama o shell e converte planilha para csv
     args = '{0} {1}.csv'.format(file, files[0])
     argument = 'ssconvert {0}'.format(args)
     command_process = subprocess.call([argument], shell=True)
-    
-    ofile  = open(files[0]+'-CONVERTIDO.csv', "wb")#open('final.csv', "wb")
+    outputFile = '{0}-CONVERTIDO.csv'.format(files[0])
+    ofile  = open(outputFile, "wb")#open('final.csv', "wb")
     writer = csv.writer(ofile, delimiter=',')
-    
+
     header=True
     arg = '{0}.csv'.format(files[0])
     f = open(arg, 'rb')#open("result.csv", 'rb') # opens the csv file
-    
+
     try:
         reader = csv.reader(f)  # creates the reader object
         for row in reader:   # iterates the rows of the file in orders
@@ -40,31 +40,25 @@ def main(file):
     finally:
         f.close()
         return True
-    
-#DATA ENTRADA aaaa-mm-dd	 = eventDate ?
-#COLECAO DE ORIGEM	= institutionCode ?
-    
+
 def mapDWC(term):
         term = str(term).lower().replace(' ','')
         mDWC = dict()
-        
+
         #mapeamentos por fazer
         mDWC[''] = 'minimumElevationInMeters'
         mDWC[''] = 'maximumElevationInMeters'
         mDWC[''] = 'type'
         mDWC[''] = 'modified'
         mDWC[''] = 'language'
-        mDWC[''] = 'rights'
+        mDWC[''] = 'license'
         mDWC[''] = 'rightsHolder'
         mDWC[''] = 'institutionID'
         mDWC[''] = 'institutionCode'
         mDWC[''] = 'collectionCode'
         mDWC[''] = 'datasetName'
         mDWC[''] = 'occurrenceID'
-        mDWC[''] = 'individualCount'
         mDWC[''] = 'preparations'
-        mDWC[''] = 'habitat'
-        mDWC[''] = 'continent'
         mDWC[''] = 'countryCode'
         mDWC[''] = 'county'
         mDWC[''] = 'minimumDepthInMeters'
@@ -75,50 +69,46 @@ def mapDWC(term):
         mDWC[''] = 'georeferenceProtocol'
         mDWC[''] = 'typeStatus'
         mDWC[''] = 'scientificName'
-        mDWC[''] = 'Dinamic properties'
         mDWC[''] = 'taxonRank'
-        
-        mDWC['subfamilia'] = ''
-        mDWC['tribo'] = ''
-        mDWC['ambiente'] = ''
-        mDWC['entrada'] = ''
-        mDWC['dataentrada'] = ''
-        mDWC['numerocoletor'] = ''
+        mDWC['idadegeologica'] = ''
         mDWC['minutodelatitude'] = ''
         mDWC['segundodelatitude'] = ''
         mDWC['latitudenortesul'] = ''
         mDWC['minutodelongitude'] = ''
         mDWC['segundodelongitude'] = ''
         mDWC['longitudelesteoeste'] = ''
-        mDWC['nºindividuos'] = ''
-        mDWC['projeto'] = ''
-        mDWC['disponibilidade'] = ''
-        mDWC['numeroreservado'] = ''
-        mDWC['subfilo'] = ''
-        mDWC['superordem'] = ''
-        mDWC['superfamilia'] = ''
-        mDWC['subfamilia'] = ''
-        mDWC['sexo'] = ''
-        mDWC['tipodecolecao'] = ''
-        mDWC['hospedeiro'] = ''
-        mDWC['dna'] = ''
-        mDWC['pecaanatomica'] = ''
-        mDWC['nous'] = ''
-        mDWC['eouw'] = ''
-        mDWC['regiao'] = ''
-        mDWC['habito'] = ''
-        mDWC['litologia'] = ''
-        mDWC['ecossistema'] = ''
-        mDWC['fenologia'] = ''
-        mDWC['idadegeologica'] = ''
-        mDWC['baciasedimentar'] = ''
-        mDWC['numerodocoletor'] = ''
-        mDWC['familiaantiga'] = ''
-        mDWC['generoantigo'] = ''
-        mDWC['epitetoantigo'] = ''
-        mDWC['determinadorantigo'] = ''
-        
         #mapeamentos feitos
+        mDWC['subfamilia'] = 'dynamicProperties'
+        mDWC['tribo'] = 'dynamicProperties'
+        mDWC['ambiente'] = 'habitat'
+        mDWC['entrada'] = 'dynamicProperties'
+        mDWC['dataentrada'] = 'dynamicProperties'
+        mDWC['numerocoletor'] = 'dynamicProperties'
+        mDWC['nºindividuos'] = 'individualCount'
+        mDWC['projeto'] = 'METADADOS'
+        mDWC['disponibilidade'] = 'dynamicProperties'
+        mDWC['numeroreservado'] = 'dynamicProperties'
+        mDWC['subfilo'] = 'dynamicProperties'
+        mDWC['superordem'] = 'dynamicProperties'
+        mDWC['superfamilia'] = 'dynamicProperties'
+        mDWC['sexo'] = 'sex'
+        mDWC['tipodecolecao'] = 'dynamicProperties'
+        mDWC['hospedeiro'] = 'associatedTaxa'
+        mDWC['dna'] = 'associatedSequence'
+        mDWC['pecaanatomica'] = 'dynamicProperties'
+        mDWC['nous'] = 'dynamicProperties'
+        mDWC['eouw'] = 'dynamicProperties'
+        mDWC['regiao'] = 'locality'
+        mDWC['habito'] = 'habitat'
+        mDWC['litologia'] = 'dynamicProperties'
+        mDWC['ecossistema'] = 'dynamicProperties'
+        mDWC['fenologia'] = 'dynamicProperties'
+        mDWC['baciasedimentar'] = 'dynamicProperties'
+        mDWC['numerodocoletor'] = 'dynamicProperties'
+        mDWC['familiaantiga'] = 'dynamicProperties'
+        mDWC['generoantigo'] = 'dynamicProperties'
+        mDWC['epitetoantigo'] = 'dynamicProperties'
+        mDWC['determinadorantigo'] = 'dynamicProperties'
         mDWC['filo'] = 'phylum'
         mDWC['classe'] = 'class'
         mDWC['ordem'] = 'order'
@@ -131,8 +121,9 @@ def mapDWC(term):
         mDWC['reino'] = 'kingdom'
         mDWC['datadedeterminacao'] = 'dateIdentified'
         mDWC['tecnicacol'] = 'samplingProtocol'
-        mDWC['tipodecolecao'] = 'type'
+        mDWC['tipodecolecao'] = 'dynamicProperties'
         mDWC['observacaoreg'] = 'basisOfRecord'
+        mDWC['continente'] = 'continent'
         mDWC['pais'] = 'country'
         mDWC['estado'] = 'stateProvince'
         mDWC['municipio'] = 'municipality'
@@ -144,10 +135,10 @@ def mapDWC(term):
         mDWC['profundidade'] = 'verbatimDepth'
         mDWC['determinador'] = 'identifiedBy'
         mDWC['coletor'] = 'recordedBy'
-        
+
         try:
             return mDWC[term]
         except KeyError:
             return term
-            
+
 main(stdin.readline())
