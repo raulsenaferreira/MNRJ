@@ -6,20 +6,22 @@ Created on Sun Oct 11 18:13:17 2015
 """
 
 from __future__ import absolute_import, division, print_function
-from sys import stdin
+import sys
 import subprocess
 #from util import Util
 #from pprint import pprint as pp
 import csv     # imports the csv module
 
-def main(file):
+def main():
     #parametro file contem nome do arquivo original e sua extensao
     # deve ser trocado por endereco do arquivo a ser modificado e arquivo destino
     #file = "TESTE.xlsx result.csv"
-    files = str(file).split('.')
+    print ('Retorno: {0}'.format(sys.argv[1]))
+
+    files = str(sys.argv[1]).split('.')
     #chama o shell e converte planilha para csv
-    args = '{0} {1}.csv'.format(file, files[0])
-    argument = 'ssconvert {0}'.format(args)
+    argument = 'ssconvert {0} {1}.csv'.format(file, files[0])
+
     command_process = subprocess.call([argument], shell=True)
     outputFile = '{0}-CONVERTIDO.csv'.format(files[0])
     ofile  = open(outputFile, "wb")#open('final.csv', "wb")
@@ -140,4 +142,4 @@ def mapDWC(term):
         except KeyError:
             return term
 
-main(stdin.readline())
+main()
