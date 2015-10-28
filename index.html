@@ -13,31 +13,37 @@
       <form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post">
         <input type="file" name="arquivo" />
         <input type="submit" value="Converter arquivo" name="submit">
-        <span id = "status"></span>
       </form>
+      <br>
+      <span id = "status"></span>
     </div>
   </body>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+ <script src="/socket.io/socket.io.js"></script>
  <script>
-  $(document).ready(function() {
+    $(document).ready(function() {
+      var socket = io();
 
-     $('#uploadForm').submit(function() {
-        $("#status").empty().text("File is uploading...");
-        $(this).ajaxSubmit({
+      $('#uploadForm').submit(function() {
+          $("#status").empty().text("File is uploading...");
+          $(this).ajaxSubmit({
 
             error: function(xhr) {
-        status('Error: ' + xhr.status);
+                status('Error: ' + xhr.status);
             },
 
             success: function(response) {
-        $("#status").empty().text(response);
                 console.log(response);
             }
-    });
+          });
         //Very important line, it disable the page refresh.
-    return false;
+        return false;
+      });
+
+      socket.on('localArquivo', function(msg){
+        $('#status').html('<a target="_BLANK" href="'+msg+'">Clique aqui para baixar o arquivo convertido.</a>');
+      });
     });
-});
 </script>
 </html>

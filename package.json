@@ -6,7 +6,8 @@
   "dependencies": {
     "multer": "~0.1.6",
     "node-inspector": "^0.12.3",
-    "python-shell": "^0.2.0"
+    "python-shell": "^0.2.0",
+    "socket.io": "^1.3.7"
   },
   "devDependencies": {
     "should": "~7.1.0",

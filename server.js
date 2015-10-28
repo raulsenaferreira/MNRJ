@@ -2,6 +2,7 @@ var express = require('express');
 var multer = require('multer');
 var app = express();
 var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var upload = multer({ dest: './uploads/'});
 var PythonShell = require('python-shell');
 
@@ -52,8 +53,9 @@ function executePython(filePath){
     if (err) throw err;
     // results is an array consisting of messages collected during execution
     //console.log('results: %j', results);
-    finalFile = options.args
-    console.log('Arquivo disponivel em ' + __dirname + '/' + finalFile + '-CONVERTIDO.csv')
+    finalFile = __dirname + '/' + options.args + '-CONVERTIDO.csv';
+    console.log('Arquivo disponivel em ' + finalFile);
+    io.emit('localArquivo', finalFile);
   });
 }
 
