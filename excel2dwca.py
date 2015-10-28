@@ -29,6 +29,8 @@ def main():
     arg = '{0}.csv'.format(files[0])
     f = open(arg, 'rb')#open("result.csv", 'rb') # opens the csv file
 
+    m={}
+
     try:
         reader = csv.reader(f)  # creates the reader object
         for row in reader:   # iterates the rows of the file in orders
@@ -36,6 +38,39 @@ def main():
                 header = False
                 for i in range(0, len(row)):
                     row[i] = mapDWC(row[i])
+
+                    if row[i] == 'graudelatitude':
+                        m['grauLat'] = i
+                    elif row[i] == 'minutodelatitude':
+                        m['minLat'] = i
+                    elif row[i] == 'segundodelatitude':
+                        m['segLat'] = i
+                    elif row[i] == 'latitudenortesul' or 'nous':
+                        m['latNS'] = i
+
+                    elif row[i] == 'graudelongitude':
+                        m['grauLong'] = i
+                    elif row[i] == 'minutodelongitude':
+                        m['minLong'] = i
+                    elif row[i] == 'segundodelongitude':
+                        m['segLong'] = i
+                    elif row[i] == 'longitudelesteoeste' or 'eouw':
+                        m['longLO'] = i
+                row+=['coordLat']
+                row+=['coordLong']
+
+            else:
+                latitude='{0}º{1}"{2}\''.format(row[m['grauLat']], row[m['minLat']], row[m['segLat']])
+                longitude='{0}º{1}"{2}\''.format(row[m['grauLong']], row[m['minLong']], row[m['segLong']])
+
+                if row[m['latNS']] == 'S':
+                    latitude='-{0}'.format(latitude)
+                elif row[m['longLO']] == 'O':
+                    longitude='-{0}'.format(longitude)
+
+                row['coordLat'] = latitude
+                row['coordLong'] = longitude
+
             writer.writerow(row)    # prints each row
     finally:
         f.close()
