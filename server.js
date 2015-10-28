@@ -53,7 +53,7 @@ function executePython(filePath){
     if (err) throw err;
     // results is an array consisting of messages collected during execution
     //console.log('results: %j', results);
-    finalFile = __dirname + '/' + options.args + '-CONVERTIDO.csv';
+    finalFile = options.args + '-CONVERTIDO.csv';
     console.log('Arquivo disponivel em ' + finalFile);
     io.emit('localArquivo', finalFile);
   });

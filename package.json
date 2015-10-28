@@ -4,6 +4,7 @@
   "description": "Experimental system of Museu Nacional do Rio de Janeiro",
   "main": "server.js",
   "dependencies": {
+    "express": "^4.13.3",
     "multer": "~0.1.6",
     "node-inspector": "^0.12.3",
     "python-shell": "^0.2.0",
@@ -25,8 +26,8 @@
   "keywords": [
     "biological",
     "collection",
-    "system",
-    "based"
+    "converter",
+    "mapping"
   ],
   "author": "Raul Sena Ferreira",
   "license": "Apache",
