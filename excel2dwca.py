@@ -69,6 +69,7 @@ def mapDWC(term):
         mDWC[''] = 'typeStatus'
         mDWC[''] = 'scientificName'
         mDWC[''] = 'taxonRank'
+        '''
         mDWC['idadegeologica'] = ''
         mDWC['minutodelatitude'] = ''
         mDWC['segundodelatitude'] = ''
@@ -76,6 +77,7 @@ def mapDWC(term):
         mDWC['minutodelongitude'] = ''
         mDWC['segundodelongitude'] = ''
         mDWC['longitudelesteoeste'] = ''
+        '''
         #mapeamentos feitos
         mDWC['subfamilia'] = 'dynamicProperties'
         mDWC['tribo'] = 'dynamicProperties'
