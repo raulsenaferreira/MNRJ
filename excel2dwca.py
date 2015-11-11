@@ -10,7 +10,7 @@ import sys
 import subprocess
 #from util import Util
 #from pprint import pprint as pp
-import csv     # imports the csv module
+import csv # imports the csv module
 
 def main():
     #parametro file contem nome do arquivo original e sua extensao
@@ -69,16 +69,10 @@ def main():
                 row+=['decimalCoordLong']
                 row+=['FullDate']
             else:
-                latitude='{0}º{1}"{2}\''.format(row[m['grauLat']], row[m['minLat']], row[m['segLat']])
-                longitude='{0}º{1}"{2}\''.format(row[m['grauLong']], row[m['minLong']], row[m['segLong']])
+                degLatitude=(row[m['grauLat']], row[m['minLat']], row[m['segLat']], row[m['latNS']])
+                degLongitude=(row[m['grauLong']], row[m['minLong']], row[m['segLong']], row[m['longLO']])
 
-                if row[m['latNS']] == 'S':
-                    latitude='-{0}'.format(latitude)
-                elif row[m['longLO']] == 'W':
-                    longitude='-{0}'.format(longitude)
-
-                row['decimalCoordLat'] = latitude
-                row['decimalCoordLong'] = longitude
+                row['decimalCoordLat'], row['decimalCoordLong'] = convertDegreeToLatLong(degLatitude, degLongitude)
 
                 fullDate = '{0}/{1}/{2}'.format(row[m['dateYear']], row[m['dateMonth']], row[m['dateDay']])
                 row['FullDate'] = fullDate
@@ -188,8 +182,17 @@ def mapDWC(term):
         except KeyError:
             return term
 
-def convertDegreeToLatLong(coordinate):
-    latLong = 0
-    return latLong
+def convertDegreeToLatLong(degLat, degLng):
+    #latitude
+    lat = int(degLat[0]) + float(degLat[1]) / 60 + float(degLat[2]) / 3600
+    if degLat[3]=='S':
+        lat*=-1
+    #longitude
+    lng = int(degLng[0]) + float(degLng[1]) / 60 + float(degLng[2]) / 3600
+    if degLng[3]=='W':
+        lng*=-1
+
+    return (lat, lng)
+
 
 main()
