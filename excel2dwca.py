@@ -39,6 +39,7 @@ def main():
                 for i in range(0, len(row)):
                     row[i] = mapDWC(row[i])
 
+                    #latitude
                     if row[i] == 'graudelatitude':
                         m['grauLat'] = i
                     elif row[i] == 'minutodelatitude':
@@ -47,7 +48,7 @@ def main():
                         m['segLat'] = i
                     elif row[i] == 'latitudenortesul' or 'nous':
                         m['latNS'] = i
-
+                    #longitude
                     elif row[i] == 'graudelongitude':
                         m['grauLong'] = i
                     elif row[i] == 'minutodelongitude':
@@ -56,21 +57,31 @@ def main():
                         m['segLong'] = i
                     elif row[i] == 'longitudelesteoeste' or 'eouw':
                         m['longLO'] = i
-                row+=['coordLat']
-                row+=['coordLong']
+                    #data
+                    elif row[i] == 'year':
+                        m['dateYear'] = i
+                    elif row[i] == 'month':
+                        m['dateMonth'] = i
+                    elif row[i] == 'day':
+                        m['dateDay'] = i
 
+                row+=['decimalCoordLat']
+                row+=['decimalCoordLong']
+                row+=['FullDate']
             else:
                 latitude='{0}º{1}"{2}\''.format(row[m['grauLat']], row[m['minLat']], row[m['segLat']])
                 longitude='{0}º{1}"{2}\''.format(row[m['grauLong']], row[m['minLong']], row[m['segLong']])
 
                 if row[m['latNS']] == 'S':
                     latitude='-{0}'.format(latitude)
-                elif row[m['longLO']] == 'O':
+                elif row[m['longLO']] == 'W':
                     longitude='-{0}'.format(longitude)
 
-                row['coordLat'] = latitude
-                row['coordLong'] = longitude
+                row['decimalCoordLat'] = latitude
+                row['decimalCoordLong'] = longitude
 
+                fullDate = '{0}/{1}/{2}'.format(row[m['dateYear']], row[m['dateMonth']], row[m['dateDay']])
+                row['FullDate'] = fullDate
             writer.writerow(row)    # prints each row
     finally:
         f.close()
@@ -176,5 +187,9 @@ def mapDWC(term):
             return mDWC[term]
         except KeyError:
             return term
+
+def convertDegreeToLatLong(coordinate):
+    latLong = 0
+    return latLong
 
 main()
