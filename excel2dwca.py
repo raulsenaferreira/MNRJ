@@ -10,7 +10,7 @@ import sys
 import subprocess
 #from util import Util
 #from pprint import pprint as pp
-import csv     # imports the csv module
+import csv # imports the csv module
 
 def main():
     #parametro file contem nome do arquivo original e sua extensao
@@ -25,20 +25,32 @@ def main():
     ofile  = open(outputFile, "wb")#open('final.csv', "wb")
     writer = csv.writer(ofile, delimiter=',')
 
-    header=True
     arg = '{0}.csv'.format(files[0])
     f = open(arg, 'rb')#open("result.csv", 'rb') # opens the csv file
 
     m={}
+    header=True
 
     try:
         reader = csv.reader(f)  # creates the reader object
         for row in reader:   # iterates the rows of the file in orders
             if header is True:
                 header = False
+                hasLat = False
+                hasLng = False
+                hasEventDate = False
+
                 for i in range(0, len(row)):
                     row[i] = mapDWC(row[i])
 
+                    if row[i] == 'decimalLatitude':
+                        hasLat = True
+                    if row[i] == 'decimalLongitude':
+                        hasLng = True
+                    if row[i] == 'eventDate':
+                        hasEventDate = True
+
+                    #latitude
                     if row[i] == 'graudelatitude':
                         m['grauLat'] = i
                     elif row[i] == 'minutodelatitude':
@@ -47,30 +59,38 @@ def main():
                         m['segLat'] = i
                     elif row[i] == 'latitudenortesul' or 'nous':
                         m['latNS'] = i
-
+                    #longitude
                     elif row[i] == 'graudelongitude':
                         m['grauLong'] = i
+                        hasLng = True
                     elif row[i] == 'minutodelongitude':
                         m['minLong'] = i
                     elif row[i] == 'segundodelongitude':
                         m['segLong'] = i
                     elif row[i] == 'longitudelesteoeste' or 'eouw':
                         m['longLO'] = i
-                row+=['coordLat']
-                row+=['coordLong']
+                    #data
+                    elif row[i] == 'year':
+                        m['dateYear'] = i
+                    elif row[i] == 'month':
+                        m['dateMonth'] = i
+                    elif row[i] == 'day':
+                        m['dateDay'] = i
 
+                if hasLat == False:
+                    row+=['decimalLatitude']
+                if hasLng == False:
+                    row+=['decimalLongitude']
+                if hasEventDate == False:
+                    row+=['eventDate']
             else:
-                latitude='{0}º{1}"{2}\''.format(row[m['grauLat']], row[m['minLat']], row[m['segLat']])
-                longitude='{0}º{1}"{2}\''.format(row[m['grauLong']], row[m['minLong']], row[m['segLong']])
+                degLatitude=(row[m['grauLat']], row[m['minLat']], row[m['segLat']], row[m['latNS']])
+                degLongitude=(row[m['grauLong']], row[m['minLong']], row[m['segLong']], row[m['longLO']])
 
-                if row[m['latNS']] == 'S':
-                    latitude='-{0}'.format(latitude)
-                elif row[m['longLO']] == 'O':
-                    longitude='-{0}'.format(longitude)
+                row['decimalLatitude'], row['decimalLongitude'] = convertDegreeToLatLong(degLatitude, degLongitude)
 
-                row['coordLat'] = latitude
-                row['coordLong'] = longitude
-
+                fullDate = '{0}/{1}/{2}'.format(row[m['dateYear']], row[m['dateMonth']], row[m['dateDay']])
+                row['eventDate'] = fullDate
             writer.writerow(row)    # prints each row
     finally:
         f.close()
@@ -81,6 +101,7 @@ def mapDWC(term):
         mDWC = dict()
 
         #mapeamentos por fazer
+        '''
         mDWC[''] = 'minimumElevationInMeters'
         mDWC[''] = 'maximumElevationInMeters'
         mDWC[''] = 'type'
@@ -104,11 +125,13 @@ def mapDWC(term):
         mDWC[''] = 'typeStatus'
         mDWC[''] = 'scientificName'
         mDWC[''] = 'taxonRank'
-        '''
+
         mDWC['idadegeologica'] = ''
+        mDWC['graudelatitude'] = ''
         mDWC['minutodelatitude'] = ''
         mDWC['segundodelatitude'] = ''
         mDWC['latitudenortesul'] = ''
+        mDWC['graudelongitude'] = ''
         mDWC['minutodelongitude'] = ''
         mDWC['segundodelongitude'] = ''
         mDWC['longitudelesteoeste'] = ''
@@ -166,8 +189,6 @@ def mapDWC(term):
         mDWC['localidade'] = 'locality'
         mDWC['datacoleta'] = 'eventDate'
         mDWC['observacaocoleta'] = 'eventRemarks'
-        mDWC['graudelatitude'] = 'decimalLatitude'
-        mDWC['graudelongitude'] = 'decimalLongitude'
         mDWC['profundidade'] = 'verbatimDepth'
         mDWC['determinador'] = 'identifiedBy'
         mDWC['coletor'] = 'recordedBy'
@@ -176,5 +197,18 @@ def mapDWC(term):
             return mDWC[term]
         except KeyError:
             return term
+
+def convertDegreeToLatLong(degLat, degLng):
+    #latitude
+    lat = int(degLat[0]) + float(degLat[1]) / 60 + float(degLat[2]) / 3600
+    if degLat[3]=='S':
+        lat*=-1
+    #longitude
+    lng = int(degLng[0]) + float(degLng[1]) / 60 + float(degLng[2]) / 3600
+    if degLng[3]=='W':
+        lng*=-1
+
+    return (lat, lng)
+
 
 main()
