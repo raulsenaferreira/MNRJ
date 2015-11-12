@@ -83,6 +83,7 @@ def main():
                     row+=['decimalLongitude']
                 if hasEventDate == False:
                     row+=['eventDate']
+
             else:
                 degLatitude=(row[m['grauLat']], row[m['minLat']], row[m['segLat']], row[m['latNS']])
                 degLongitude=(row[m['grauLong']], row[m['minLong']], row[m['segLong']], row[m['longLO']])
